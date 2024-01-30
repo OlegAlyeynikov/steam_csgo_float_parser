@@ -2,8 +2,6 @@
 
 # dotenv
 .env
-buy_module/credentials/
-buy_module/credentials_my/
 db.sqlite3
 __pycache__/
 # virtualenv
@@ -13,7 +11,7 @@ ENV/
 Listing_logfile.log
 Buy_bot_logfile.log
 Search_logfile.log
-
+buy_item/buy_module/credentials_m
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
