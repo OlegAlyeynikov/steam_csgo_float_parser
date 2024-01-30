@@ -1,0 +1,322 @@
+<!-- myapp/templates/login.html -->
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+
+  <div class="container">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-xl-3 mb-3" style="text-align: center;">
+                <div class="card shadow border-start-success py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+<center><h3>Energize</h3></center>
+                                <button onclick="startProcesses()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-play-circle" style="font-size: 45px;color: var(--bs-success);padding-right: 5px;padding-left: 5px;">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                    <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"></path>
+                                </svg></button>
+                                <button onclick="stopProcesses()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-stop-circle" style="font-size: 45px;padding-right: 5px;padding-left: 5px;">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                    <path d="M5 6.5A1.5 1.5 0 0 1 6.5 5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5v-3z"></path>
+                                </svg></button>
+                                <button onclick="restartProcesses()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-arrow-repeat" style="font-size: 45px;padding-right: 5px;padding-left: 5px;">
+                                    <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"></path>
+                                    <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"></path>
+                                </svg></button>
+                            </div>
+
+                            <div><span>Check module </span><div id="statusSoft1"class="circle cgrey"></div></div>
+                            <div><span>Listing module </span><div id="statusSoft2"class="circle cgrey"></div></div>
+                            <div><span>Buy module </span><div id="statusSoft3"class="circle cgrey"></div></div>
+
+                        </div>
+
+                    </div>
+     
+                </div>
+            </div>
+
+
+            <div class="col-md-3 col-xl-3 mb-3">
+    <div class="card shadow border-start-success py-2">
+        <div class="card-body">
+            <div class="row align-items-center no-gutters">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <center><h3>Items purchased</h3></center>
+                                <tr>
+                                    <th>Total</th>
+                                    <th>Successful</th>
+                                    <th>Failed</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="items_count">0</td>
+                                    <td id="buy_ok">0</td>
+                                    <td id="buy_error">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+            <div class="col-md-6 col-xl-6 mb-6">
+                <div class="card shadow border-start-success py-2">
+        <div class="card-body">
+            <div class="row align-items-center no-gutters">
+                <div class="col">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <center><h3>Proxies</h3></center>
+                                <tr>
+                                    <th>Total</th>
+                                    <th>Success</th>
+                                    <th>Slow</th>
+                                    <th>Bans</th>
+                                    <th>Failed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="proxy_count">0</td>
+                                    <td id="proxy_work">0</td>
+                                    <td id="proxy_slow">0</td>
+                                    <td id="proxy_ban">0</td>
+                                    <td id="proxy_nowork">0</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="mb-4">
+                <div class="card shadow mb-4"></div>
+                <h3>Last purchased items</h3>
+                <div class="card shadow mb-4">
+
+                    <ul id="items_list" class="list-group list-group-flush">
+
+
+                   <!--     <li class="list-group-item">
+                            <div class="row align-items-center no-gutters">
+                            <div class="col"><h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">24.11.2023 13:31:04</span></div>
+                            <div class="col"><h6 class="mb-0"><strong>Float</strong></h6><span class="text-xs">0б012</span></div>
+                            <div class="col"><h6 class="mb-0"><strong>Patern</strong></h6><span class="text-xs">0б012</span></div>
+                            <div class="col"><h6 class="mb-0"><strong>Price</strong></h6><span class="text-xs">0б012</span></div>
+                            </div>
+                        </li>-->
+                    </ul>
+                </div>
+            </div>
+    </div>
+
+<script>
+    function getClientIP() {
+    fetch('/get_ip/')
+        .then(response => response.json())
+        .then(data => {
+            // Use the client's IP address in your logic
+            console.log('Client IP:', data.client_ip);
+
+            // Your existing code...
+        })
+        .catch(error => console.error('Error getting IP:', error));
+}
+
+    // Call the function to get the client's IP address
+    getClientIP();
+
+    function stopProcesses() {
+        fetch('/control/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: 'command=stop',  // Команда на сервере для остановки процессов
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                $('#proxy_count').text('0');
+                    $('#proxy_slow').text('0');
+                    $('#proxy_ban').text('0');
+                    $('#buy_ok').text('0');
+                    $('#buy_error').text('0');
+                    $('#items_count').text(data.items_count);
+                    $('#proxy_work').text('0');
+                    $('#proxy_nowork').text('0');
+                alert('Processes stopped successfully!');
+                $('#proxy_count').text('0');
+                    $('#proxy_slow').text('0');
+                    $('#proxy_ban').text('0');
+                    $('#buy_ok').text('0');
+                    $('#buy_error').text('0');
+                    $('#items_count').text(data.items_count);
+                    $('#proxy_work').text('0');
+                    $('#proxy_nowork').text('0');
+
+            } else {
+                alert('Ошибка: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function startProcesses() {
+        // Отправляем POST-запрос на сервер
+        fetch('/control/', {  // Обновленный URL
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: 'command=start',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Processes started successfully!');
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function restartProcesses() {
+        fetch('/control/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: 'command=restart',  // Команда на сервере для перезапуска процессов
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                $('#proxy_count').text('0');
+                $('#proxy_slow').text('0');
+                    $('#proxy_ban').text('0');
+                    $('#buy_ok').text('0');
+                    $('#buy_error').text('0');
+                    $('#items_count').text(data.items_count);
+                    $('#proxy_work').text('0');
+                    $('#proxy_nowork').text('0');
+                alert('Processes restarted successfully!');
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+
+
+    <script>
+
+    $(document).ready(function () {
+        function updateValues() {
+
+            // Отправка POST-запроса на сервер
+            $.ajax({
+                type: 'GET',
+                url: '/home_status/',  // Замените на ваш путь к представлению
+                dataType: 'json',
+                success: function (data) {
+                    //var data = JSON.parse(data);
+                    // Обновление значений на странице
+                    $('#proxy_count').text(data.amount_proxies);
+                    $('#proxy_slow').text(data.proxy_slow);
+                    $('#proxy_ban').text(data.proxy_bad);
+                    $('#balans').text(data.balance);
+                    $('#buy_ok').text(data.buy_ok);
+                    $('#buy_error').text(data.buy_error);
+                    $('#items_count').text(data.items_count);
+                    $('#proxy_work').text(data.proxy_work_count);
+                    $('#proxy_nowork').text(data.proxy_nowork_count);
+
+
+                    if (typeof data.port_12352 !== 'undefined') {
+                        if (data.port_12352) {$("#statusSoft1").removeClass().addClass('circle cgreen');}
+                        else {$("#statusSoft1").removeClass().addClass('circle cred');}
+                    } else {$("#statusSoft1").removeClass().addClass('circle cgrey');}
+
+                    if (typeof data.port_12350 !== 'undefined') {
+                        if (data.port_12350) {$("#statusSoft2").removeClass().addClass('circle cgreen');}
+                        else {$("#statusSoft2").removeClass().addClass('circle cred');}
+                    } else {$("#statusSoft2").removeClass().addClass('circle cgrey');}
+
+                    if (typeof data.port_12351 !== 'undefined') {
+                        if (data.port_12351) {$("#statusSoft3").removeClass().addClass('circle cgreen');}
+                        else {$("#statusSoft3").removeClass().addClass('circle cred');}
+                    } else {$("#statusSoft3").removeClass().addClass('circle cgrey');}
+
+                    //var buy_items_js = data.buy_items;
+                    if (data.buy_items) {
+                        var buy_items_js = data.buy_items;
+
+                        $('#items_list').prepend('                        <li class="list-group-item">\n' +
+                            '                            <div class="row align-items-center no-gutters">\n' +
+                            '                            <div class="col"><h6 class="mb-0"><strong>' + buy_items_js.hash_name + '</strong></h6><span class="text-xs">' + buy_items_js.data_time + '</span></div>\n' +
+                            '                            <div class="col"><h6 class="mb-0"><strong>Float</strong></h6><span class="text-xs">' + buy_items_js.float + '</span></div>\n' +
+                            '                            <div class="col"><h6 class="mb-0"><strong>Patern</strong></h6><span class="text-xs">' + buy_items_js.pattern + '</span></div>\n' +
+                            '                            <div class="col"><h6 class="mb-0"><strong>Price</strong></h6><span class="text-xs">' + buy_items_js.price + '</span></div>\n' +
+                            '                            </div>\n' +
+                            '                        </li>');
+
+
+                    }
+                    //if (data.buy_items !==null) {
+//                        $('#items_list').prepend('<li class="list-group-item"> <div class="row align-items-center no-gutters"> <div class="col me-2"> ' +
+//                            '<h6 class="mb-0"><strong>' + buy_items_js.hash_name + '</strong></h6><span class="text-xs">24.11.2023 13:31:04</span></div></div></li>');
+//                    }
+
+                    console.log(data);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error when updating data:', textStatus, errorThrown);
+                }
+            });
+        }
+
+        // Обновление данных каждые 5 секунд
+        setInterval(updateValues, 500);
+    });
+</script>
+
+
+
+
+
+
+  </div>
+
+{% endblock %}

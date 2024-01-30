@@ -1,0 +1,25 @@
+<!-- web/templates/proxy.html -->
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="col-md-12 col-xl-12 mb-4">
+
+  <form class="col-md-12 col-xl-12 mb-4" method="post" action="{% url 'task_manager:save_proxy' %}">
+  {% csrf_token %}
+  <button class="btn btn-primary" type="submit">Save</button> <span>Edit Proxies : <span id="proxy_count_edit">{{proxy_count}}</span></span><br><br>
+    <textarea id="proxy_content" name="proxy_content" style="width: 90%; height: 80vh;">{{ file_content }}</textarea><br>
+
+</form>
+</div>
+
+<script>
+    $('#proxy_content').on('input', function () {
+
+        var textareaValue = $(this).val();
+        var lineCount = textareaValue.split(/\r*\n/).length;
+        $('#proxy_count_edit').text(lineCount);
+    });
+</script>
+
+{% endblock %}

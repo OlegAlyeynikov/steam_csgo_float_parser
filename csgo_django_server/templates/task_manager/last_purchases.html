@@ -1,0 +1,28 @@
+<ul class="list-group">
+    {% for purchase in last_purchases %}
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>{{ purchase.0 }}</strong>
+                    <br>
+                    <small class="text-muted">{{ purchase.2 }}</small>
+                </div>
+                <div class="col-md-3">
+                    <strong>Float</strong>
+                    <br>
+                    <small class="text-muted">{{ purchase.3 }}</small>
+                </div>
+                <div class="col-md-3">
+                    <strong>Pattern</strong>
+                    <br>
+                    <small class="text-muted">{{ purchase.4 }}</small>
+                </div>
+                <div class="col-md-3">
+                    <strong>Price</strong>
+                    <br>
+                    <small class="text-muted">${{ purchase.1 }}</small>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

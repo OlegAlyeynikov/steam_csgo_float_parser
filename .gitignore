@@ -1,0 +1,57 @@
+.idea/
+
+# dotenv
+.env
+buy_module/credentials/
+buy_module/credentials_my/
+db.sqlite3
+__pycache__/
+# virtualenv
+.venv
+venv/
+ENV/
+Listing_logfile.log
+Buy_bot_logfile.log
+Search_logfile.log
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg

@@ -1,0 +1,15 @@
+<!-- web/templates/proxy.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-12 col-xl-12 mb-4">
+
+  <form class="col-md-12 col-xl-12 mb-4" method="post" action="{% url 'task_manager:items_save' %}">
+    {% csrf_token %}
+    <button class="btn btn-primary" type="submit">Save</button> <span>Edit Items </span><br><br>
+    <textarea id="items_content" name="items_content" style="width: 90%; height: 80vh;">{{ file_content }}</textarea><br>
+  </form>
+
+</div>
+
+{% endblock %}
