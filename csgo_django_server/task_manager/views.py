@@ -228,27 +228,15 @@ class ControlView(View):
 def update_data(request):
     try:
         if request.method == 'POST':
-            # print(f"Headers: {request.headers}")
-            # print(f"User Agent: {request.META.get('HTTP_USER_AGENT')}")
-            # print(f"IP Address: {request.META.get('REMOTE_ADDR')}")
-            # print(f"Request Body: {request.body.decode('utf-8')}")
-            # print(f"REQUEST: {request}")
-            # print(f"REQUEST BODY: {request.body}")
-
             try:
                 request_data = json.loads(request.body.decode('utf-8'))
-                # print(f"REQUEST DATA: {request_data}")
 
-                # Update 'soft_status' based on request data
                 for key in ['proxy_bad', 'proxy_slow', 'balance', 'buy_ok', 'buy_error', 'items_count',
                             'proxy_work_count', 'buy_items', 'listing_proxy_work', 'search_proxy_work',
                             'len_listing_sessions', 'len_search_sessions', 'proxy_nowork_count', 'amount_proxies']:
                     if key in request_data:
                         web_data[key] = request_data[key]
 
-                # print(f"request.session soft_status: {web_data}")
-                # request.session.save()
-                # print(f"FOR GET:----->>>> : {web_data}")
                 return JsonResponse(web_data)
 
             except json.JSONDecodeError:

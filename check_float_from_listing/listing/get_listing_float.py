@@ -41,45 +41,44 @@ async def change_sid_to_random(proxy):
 async def fetch_data(session_info, link, conditions,  sessions_):
     start_time = time.time()
     start_time_datetime = datetime.utcnow()
+    listing_link = link + os.getenv("URL_RENDER_LISTING")
     try:
-        for condition_ in conditions:
-            float_min = condition_[0]
-            float_max = condition_[1]
-            pattern = condition_[2]
-            min_price = condition_[3]
-            max_price = condition_[4]
-            listing_link = link + os.getenv("URL_RENDER_LISTING")
-            float_conditions = (float_min, float_max, pattern,)
-            headers_ = {
-                "Accept": "*/*",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Accept-Language": "en-GB;q=1.0, en;q=0.5",
-                "Connection": "keep-alive",
-                "Host": "steamcommunity.com",
-                # "If-Modified-Since": if_modified,
-                "Cache-Control": "no-cache",
-                "Referer": listing_link,
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-origin",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.6; rv:41.0) Gecko",
-                "X-Requested-With": "XMLHttpRequest",
-                "Cookie": session_info.cookies
-            }
-            timeout = aiohttp.ClientTimeout(total=10)
-            async with session_info.session.get(
-                    listing_link, proxy=session_info.proxy, ssl=False, headers=headers_, timeout=timeout) as response:
-                if response.status == 200:
-                    data = await response.json()
-                    if data:
-                        listing = dict(data['listinginfo'])
-                        for id_, value in listing.items():
-                            if id_ not in Items:
-                                if "converted_price" and "converted_fee" in listing[id_]:
-                                    fee = listing[id_]["converted_fee"]
-                                    price = listing[id_]["converted_price"] + fee
-                                    min_price = min_price
-                                    max_price = max_price
+        headers_ = {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en-GB;q=1.0, en;q=0.5",
+            "Connection": "keep-alive",
+            "Host": "steamcommunity.com",
+            # "If-Modified-Since": if_modified,
+            "Cache-Control": "no-cache",
+            "Referer": listing_link,
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.6; rv:41.0) Gecko",
+            "X-Requested-With": "XMLHttpRequest",
+            "Cookie": session_info.cookies
+        }
+        timeout = aiohttp.ClientTimeout(total=10)
+        async with session_info.session.get(
+                listing_link, proxy=session_info.proxy, ssl=False, headers=headers_, timeout=timeout) as response:
+            if response.status == 200:
+                data = await response.json()
+                if data:
+                    listing = dict(data['listinginfo'])
+                    for id_, value in listing.items():
+                        if id_ not in Items:
+                            if "converted_price" and "converted_fee" in listing[id_]:
+                                fee = listing[id_]["converted_fee"]
+                                price = listing[id_]["converted_price"] + fee
+                                for condition_ in conditions:
+                                    float_min = condition_[0]
+                                    float_max = condition_[1]
+                                    pattern = condition_[2]
+                                    min_price = condition_[3]
+                                    max_price = condition_[4]
+                                    # listing_link = link + os.getenv("URL_RENDER_LISTING")
+                                    float_conditions = (float_min, float_max, pattern,)
                                     if min_price <= price <= max_price:
                                         asset_link = value['asset']['market_actions'][0]["link"]
                                         listing_id = id_
@@ -103,43 +102,43 @@ async def fetch_data(session_info, link, conditions,  sessions_):
                                             os.getenv("PATH_TO_LISTING_ITEMS_CSV_DB"))
                                     else:
                                         continue
-                                else:
-                                    logger.warning("No converted_price")
-                                    continue
                             else:
+                                logger.warning("No converted_price")
                                 continue
-                        await save_response_time_csv(response.status, session_info.proxy, start_time_datetime)
-                        success = success_listing_count()
-                        await send_async_request({"proxy_work_count": success})
-                        all_data_time = time.time()
-                        logger.info(f"Success listing. Get all data {all_data_time - start_time} "
-                                    f"Count 200: {success}")
-                        return
-                    else:
-                        await save_response_time_csv(response.status, session_info.proxy, start_time_datetime)
-                        logger.warning(f"Empty data listing")
-                        return
+                        else:
+                            continue
+                    await save_response_time_csv(response.status, session_info.proxy, start_time_datetime)
+                    success = success_listing_count()
+                    await send_async_request({"proxy_work_count": success})
+                    all_data_time = time.time()
+                    logger.info(f"Success listing. Get all data {all_data_time - start_time} "
+                                f"Count 200: {success}")
+                    return
                 else:
-                    if response.status == 429:
-                        rate_lim_count = rate_limited_listing_count()
-                        await send_async_request({"proxy_bad": rate_lim_count})
-                        await save_response_time_csv(response.status, session_info.proxy, start_time_datetime)
-                        logger.warning(f"Rate limited listing. Count 429: {rate_lim_count}")
+                    await save_response_time_csv(response.status, session_info.proxy, start_time_datetime)
+                    logger.warning(f"Empty data listing")
+                    return
+            else:
+                if response.status == 429:
+                    rate_lim_count = rate_limited_listing_count()
+                    await send_async_request({"proxy_bad": rate_lim_count})
+                    await save_response_time_csv(response.status, session_info.proxy, start_time_datetime)
+                    logger.warning(f"Rate limited listing. Count 429: {rate_lim_count}")
 
-                        if "sid" in session_info.proxy:
-                            new_proxy = await change_sid_to_random(session_info.proxy)
-                            await session_info.close()
-                            # Create a new session with a new SID
-                            new_session_info = await initialize_session_for_proxy(new_proxy)
-                            sessions_.append(new_session_info)
-                            logger.info(f"New session created with a new SID")
+                    if "sid" in session_info.proxy:
+                        new_proxy = await change_sid_to_random(session_info.proxy)
+                        await session_info.close()
+                        # Create a new session with a new SID
+                        new_session_info = await initialize_session_for_proxy(new_proxy)
+                        sessions_.append(new_session_info)
+                        logger.info(f"New session created with a new SID")
 
-                        return
-                    else:
-                        await save_response_time_csv(response.status, session_info.proxy, start_time_datetime)
-                        logger.error(f"Status code listing: {response.status}, "
-                                     f"Failed to fetch data from {link}")
-                        return
+                    return
+                else:
+                    await save_response_time_csv(response.status, session_info.proxy, start_time_datetime)
+                    logger.error(f"Status code listing: {response.status}, "
+                                 f"Failed to fetch data from {link}")
+                    return
     except aiohttp.ClientError as e:
         logger.exception(f"Request exception proxy: {session_info.proxy}: {e}")
         return

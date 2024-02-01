@@ -1,10 +1,11 @@
 import asyncio
 import json
+import os
 
 
 async def send_command(command):
     try:
-        reader, writer = await asyncio.open_connection('localhost', 12351)
+        reader, writer = await asyncio.open_connection('localhost', int(os.getenv("PORT_BUY_MODULE")))
         writer.write(json.dumps(command).encode())
         await writer.drain()
         writer.close()

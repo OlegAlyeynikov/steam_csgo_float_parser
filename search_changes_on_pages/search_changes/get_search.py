@@ -1,4 +1,5 @@
 import atexit
+import os
 import signal
 import asyncio
 import aiohttp
@@ -158,47 +159,6 @@ async def repeating_task(link_, session_index):
                 await initial_session.close()
 
 
-# async def repeating_task(proxy_new, link_, session_index):
-#     initial_link = "https://steamcommunity.com/"
-#     header_start = get_header()
-#     cookies_ = None  # Initialize cookies_ to a default value
-#     try:
-#         async with aiohttp.ClientSession() as initial_session:
-#             async with initial_session.get(initial_link, proxy=proxy_new, ssl=False,
-#                                            headers=header_start) as initial_response:
-#                 if initial_response.status == 200:
-#                     cookie_header = initial_response.cookies
-#                     cookies_ = "; ".join([f"{key}={value.value}" for key, value in cookie_header.items()])
-#                     logger.info(f"Successfully initial request, module: get_price.py")
-#                 else:  # Handle the case where the initial request fails
-#                     logger.warning(f"Initial request failed with status: {initial_response.status}")
-#             next_cookie_update = asyncio.get_event_loop().time() + random.randint(1 * 3600, 2 * 3600)
-#
-#             while should_continue:
-#                 current_time = asyncio.get_event_loop().time()
-#                 await fetch_data_price(initial_session, proxy_new, cookies_, link_)
-#                 current_time_end = asyncio.get_event_loop().time()
-#                 elapsed_ = current_time_end - current_time
-#                 if current_time >= next_cookie_update:  # Update cookies
-#                     headers_refresh_cookie = get_header(url=link_, cookie=cookies_)
-#                     async with initial_session.get(link_, proxy=proxy_new, ssl=False,
-#                                                    headers=headers_refresh_cookie) as response:
-#                         if response.status == 200:
-#                             cookies_ = response.cookies
-#                     next_cookie_update = current_time + random.randint(1 * 3600,
-#                                                                        2 * 3600)  # Set the next cookie update time
-#                 await asyncio.sleep(60 - elapsed_)
-#     except Exception as e:
-#         logger.error(f"Error in repeating_task: {e}")
-#     except aiohttp.ClientHttpProxyError as e:
-#         logger.error(e)
-#     except (OSError, Exception) as e:
-#         logger.error(f"Request timed out. {e}")
-#     finally:
-#         # Close the existing session to release resources
-#         if 'initial_session' in locals():
-#             await initial_session.close()
-
 async def handle_client(reader, writer):
     pass
 
@@ -206,7 +166,7 @@ async def handle_client(reader, writer):
 async def run_server():
     server = await asyncio.start_server(
         lambda r, w: handle_client(r, w),
-        'localhost', 12352)
+        'localhost', int(os.getenv("PORT_SEARCH")))
 
     async with server:
         try:
@@ -253,37 +213,7 @@ async def schedule_tasks():
 
     should_save_data = True
 
-    # Wait for the server task to complete
     await server_task
-
-
-# async def schedule_tasks():
-#     global should_save_data, should_continue
-#     len_urls = len(urls)
-#     print(len_urls)
-#     delay = 0.5 / len_urls  # Set the initial delay. 1/len_urls is each url checks each 1 second
-#     urls_new_list = urls * 120  # Multiply urls for tasks
-#     len_proxies = len(urls_new_list)
-#     proxies_listing_list = Proxies_list[len_proxies + 1:]
-#     create_file_proxies_for_listing(proxies_listing_list)
-#     tasks = []
-#     start_time_ = asyncio.get_event_loop().time()
-#     for i, url_ in enumerate(urls_new_list):
-#         proxy = get_proxy_from_proxies_list()
-#         task = asyncio.create_task(repeating_task(proxy, url_, i))
-#         tasks.append(task)
-#         start_time_ += delay  # Increase the start time for the next session
-#         await asyncio.sleep(delay)
-#     print(f"Len tasks : {len(tasks)}")
-#     await send_async_request({"len_search_sessions": len(tasks)})
-#
-#     await asyncio.gather(*tasks)
-#
-#     # Keep the script running
-#     while should_continue:
-#         await asyncio.sleep(5)
-#
-#     should_save_data = True
 
 
 def save_data_on_exit():  # Define your signal handler to save data on exit

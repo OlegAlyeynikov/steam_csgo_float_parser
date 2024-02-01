@@ -58,7 +58,7 @@ async def run_server():
     global server
     server = await asyncio.start_server(
         lambda r, w: handle_client(r, w),
-        'localhost', 12350)
+        'localhost', int(os.getenv("PORT_LISTING")))
 
     async with server:
         try:

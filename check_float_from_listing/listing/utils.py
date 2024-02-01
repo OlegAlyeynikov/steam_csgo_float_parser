@@ -67,7 +67,8 @@ logger = setup_logging(enable_console=Enable_console_log)  # Set enable_console 
 
 
 async def send_async_request(data):
-    url = 'http://127.0.0.1:8088/update_data/'
+    port = int(os.getenv("PORT_DJANGO_SERVER"))
+    url = F'http://127.0.0.1:{port}/update_data/'
     headers = {'Content-Type': 'application/json'}
 
     async with aiohttp.ClientSession() as session:
