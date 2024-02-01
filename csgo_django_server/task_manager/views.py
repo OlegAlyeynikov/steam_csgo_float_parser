@@ -177,9 +177,9 @@ class ControlView(View):
         self.search_module_venv = os.getenv('PATH_TO_SEARCH_MODULE_VENV')
 
         self.processes = [
-            (self.search_main, self.search_module_venv, 12352, 3),
-            (self.listing_main, self.listing_module_venv, 12350, 1),
-            (self.buy_module_main, self.buy_module_venv, 12351, 0),
+            (self.search_main, self.search_module_venv, int(os.getenv("SEARCH_PORT")), 3),
+            (self.listing_main, self.listing_module_venv, int(os.getenv("LISTING_PORT")), 1),
+            (self.buy_module_main, self.buy_module_venv, int(os.getenv("BUY_MODULE_PORT")), 0),
         ]
         self.web_data_update = {
             "proxy_nowork_count": 0,
@@ -264,10 +264,10 @@ def update_data(request):
 def home_status(request):
     if request.method == 'GET':
         process_manager = ProcessManager()
-        web_data['port_8088'] = process_manager.get_process_status_by_port(8088)
-        web_data['port_12352'] = process_manager.get_process_status_by_port(12352)
-        web_data['port_12350'] = process_manager.get_process_status_by_port(12350)
-        web_data['port_12351'] = process_manager.get_process_status_by_port(12351)
+        web_data['port_8088'] = process_manager.get_process_status_by_port(int(os.getenv("RUN_SERVER_PORT")))
+        web_data['port_12352'] = process_manager.get_process_status_by_port(int(os.getenv("SEARCH_PORT")))
+        web_data['port_12350'] = process_manager.get_process_status_by_port(int(os.getenv("LISTING_PORT")))
+        web_data['port_12351'] = process_manager.get_process_status_by_port(int(os.getenv("BUY_MODULE_PORT")))
 
         # print(f"GET: SOFT STATUS{web_data}")
         soft_status = web_data.copy()

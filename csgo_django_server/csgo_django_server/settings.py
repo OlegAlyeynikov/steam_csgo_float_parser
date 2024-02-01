@@ -40,7 +40,9 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "") != "False"
 
-ALLOWED_HOSTS = ["*"]
+RUN_SERVER_PORT = int(os.getenv('RUN_SERVER_PORT', default=8000))
+
+ALLOWED_HOSTS = ['*']
 WEB_GLOBAL_DATA = {}
 
 # Application definition

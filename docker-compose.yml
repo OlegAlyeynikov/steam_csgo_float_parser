@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  django_server_app:
+    build:
+      context: ./csgo_django_server/csgo_django_server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./csgo_django_server/csgo_django_server:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=csgo_django_server.settings
+    env_file:
+      - .env
+    command: ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:${PORT:-8000}"]
