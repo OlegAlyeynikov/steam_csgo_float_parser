@@ -1,15 +1,53 @@
 version: '3'
 
 services:
-  django_server_app:
+  django:
     build:
-      context: ./csgo_django_server/csgo_django_server
+      context: .
+      dockerfile: ./csgo_django_server/Dockerfile
     ports:
-      - "8000:8000"
+      - "8088:8088"
     volumes:
-      - ./csgo_django_server/csgo_django_server:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./csgo_django_server:/app
+    depends_on:
+      - search
     environment:
       - DJANGO_SETTINGS_MODULE=csgo_django_server.settings
-    env_file:
-      - .env
-    command: ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:${PORT:-8000}"]
+      - DJANGO_SECRET_KEY=b6c@1v(rnxg+s+npb!21n-9y-ex0*k^z_vpq63cc_48vxl3or+
+      - MEDIA_ROOT=/app
+      - DEBUG=True
+      - PATH_TO_BUY_MODULE_VENV=/app/buy_item/.venv
+      - PATH_TO_LISTING_MODULE_VENV=/app/check_float_from_listing/.venv
+      - PATH_TO_SEARCH_MODULE_VENV=/app/search_changes_on_pages/.venv
+      - PATH_TO_SEARCH_MAIN=/app/search_changes_on_pages/main.py
+      - PATH_TO_LISTING_MAIN=/app/check_float_from_listing/main_server.py
+      - PATH_TO_BUY_MODULE_MAIN=/app/buy_item/main.py
+      - PATH_TO_BUY_ITEMS_CSV_DB=/app/Buy_items.csv
+      - PATH_TO_UPLOAD_DIRECTORY=/app
+      - PATH_TO_DOCKER_COMPOSE=/app/docker-compose.yml
+      - PATH_TO_PROXY_LIST=/app/proxies_list.txt
+      - PATH_TO_CONDITIONS=/app/search_changes_on_pages/conditions/conditions_50.py
+      - PORT_DJANGO_SERVER=8088
+      - SEARCH_PORT=12352
+      - LISTING_PORT=12350
+      - BUY_MODULE_PORT=12351
+    command: ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:${PORT_DJANGO_SERVER:-8000}"]
+
+  search:
+    build:
+      context: .
+      dockerfile: ./search_changes_on_pages/Dockerfile
+    environment:
+      - MEDIA_ROOT=/app
+      - PATH_TO_SEARCH_LOG_FILE=/app/Search_logfile.log
+      - PATH_TO_PROXY_LIST=/app/proxies_list.txt
+      - PATH_TO_USER_AGENT=/app/search_changes_on_pages/search_changes/agents.txt
+      - PATH_TO_LISTING_PROXIES=/app/check_float_from_listing/proxies/proxies_list.py
+      - PORT_SEARCH=12352
+      - PORT_LISTING=12350
+      - PORT_DJANGO_SERVER=8088
+    ports:
+      - "12352:12352"
+    volumes:
+      - ./search_changes_on_pages:/app
