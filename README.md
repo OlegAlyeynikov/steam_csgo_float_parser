@@ -11,7 +11,7 @@ If it finds changes, it sends the json object to the listing project. </p>
 <p>check_float_from_listing - takes a command and makes a request to the steam listing endpoint for a specific item.  
 It compares specified search conditions such as price and float range, and if the conditions match, it sends a command to the buy module project.</p>
 
-<p>buy_item project - when receiving a command, immediately tries to buy the item. </p>
+<p>buy_item - when receiving a command, immediately tries to buy the item. </p>
 
 <p>csgo_django_server - provides a simple interface for management.</p>
 
